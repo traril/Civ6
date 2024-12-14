@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civ6 Wiki サンプルページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background: #f4f4f4;
+            padding: 1rem;
+            border-right: 1px solid #ddd;
+            min-width: 200px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            margin: 0.5rem 0;
+        }
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            display: flex;
+        }
+        .content {
+            flex: 1;
+            padding: 1rem;
+        }
+        .content h2 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 0.5rem;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .table-container {
+            margin-top: 1rem;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        table th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Civ6 Wiki サンプルページ</h1>
+    </header>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#introduction">概要</a></li>
+            </ul>
+        </nav>
+        <div class="content">
+            <section id="introduction">
+                <h2>概要</h2>
+                <div class="table-container">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <!-- CSVヘッダーがここに挿入されます -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- CSVデータがここに挿入されます -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Civ6 Wiki サンプルページ</p>
+    </footer>
+    <script>
+        // CSVデータをテーブルに挿入するスクリプト
+        document.addEventListener('DOMContentLoaded', function () {
+            const csvPath = 'CSV/陸上戦.csv'; // CSVファイルのパス
+
+            fetch(csvPath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('CSVファイルの読み込みに失敗しました');
+                    }
+                    return response.text();
+                })
+                .then(csvData => {
+                    const rows = csvData.trim().split('\n');
+                    const headers = rows[0].split(',');
+                    const tableHead = document.querySelector('#data-table thead tr');
+                    const tableBody = document.querySelector('#data-table tbody');
+
+                    // ヘッダー行を作成
+                    headers.forEach(header => {
+                        const th = document.createElement('th');
+                        th.textContent = header.trim();
+                        tableHead.appendChild(th);
+                    });
+
+                    // データ行を作成
+                    rows.slice(1).forEach(row => {
+                        const cols = row.split(',');
+                        const tr = document.createElement('tr');
+
+                        cols.forEach(col => {
+                            const td = document.createElement('td');
+                            td.textContent = col.trim();
+                            tr.appendChild(td);
+                        });
+
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(error => {
+                    console.error('エラー:', error);
+                });
+        });
+    </script>
+</body>
+</html>
